@@ -56,12 +56,15 @@ class RestaurantsSpider(scrapy.Spider):
 
         title = soup.find("h1", class_="fHibz")
         rating = soup.find("span", class_="fdsdx")
-        phone_number = soup.find("a", class_="iPqaD _F G- hsDFd eKwUx")
+        phone_number = soup.find("span", class_="fhGHT")
         review_count = soup.find("a", class_="dUfZJ")
         street_address = soup.find("span", class_="brMTW")
-        geodata = soup.find("img", class_="eCPON w MD _S")
-        locality = soup.find("div", class_="cfvAV")
-        price = soup.find("a", class_="drUyy")
+        work_time = soup.find("span", class_="cSjwK")
+        geodata = soup.find("div", class_="dsMUL f e")
+        # price = soup.find("div", class_="cfvAV")
+        full_data = soup.find("div", class_="guXtP")
+        price = soup.find_all("div", class_="cfvAV")[0]
+        locality = soup.find_all("div", class_="cfvAV")[1]
 
         yield {
             "url": response.url,
@@ -69,9 +72,11 @@ class RestaurantsSpider(scrapy.Spider):
             "rating": rating.get_text() if rating else "",
             "review_count": review_count.get_text() if review_count else "",
             "street_adress": street_address.get_text() if street_address else "",
+            "work_time": work_time.get_text() if work_time else "",
             "geodata": geodata.get_text() if geodata else "",
-            "locality": locality.get_text() if locality else "",
+            "full_data": full_data.get_text() if full_data else "",
             "price": price.get_text() if price else "",
+            "locality": locality.get_text() if locality else "",
             "assessments_info": assessments_data,
             "phone_number": phone_number.get_text() if phone_number else "",
         }
