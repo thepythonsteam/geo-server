@@ -63,8 +63,19 @@ class RestaurantsSpider(scrapy.Spider):
         geodata = soup.find("div", class_="dsMUL f e")
         # price = soup.find("div", class_="cfvAV")
         full_data = soup.find("div", class_="guXtP")
-        price = soup.find_all("div", class_="cfvAV")[0]
-        locality = soup.find_all("div", class_="cfvAV")[1]
+        price = soup.find_all("div", class_="cfvAV")
+        if len(price) > 0:
+            price = price[0]
+        else:
+            price = None
+
+        locality = soup.find_all("div", class_="cfvAV")
+        if len(locality) > 1:
+            locality = locality[1]
+        elif len(locality) == 1:
+            locality = locality[0]
+        else:
+            locality = None
 
         yield {
             "url": response.url,
